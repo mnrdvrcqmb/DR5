@@ -1,71 +1,96 @@
-<div class="topbar">
-                <!-- LOGO -->
-                <div class="topbar-left">
-                    <a href="dashboard.php" class="logo">
-                        <i class="zmdi zmdi-group-work icon-c-logo"></i>
-                        <span>Staff Panel </span></a>
-                </div>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {box-sizing: border-box;}
 
-                <nav class="navbar-custom">
+body { 
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-                    <ul class="list-inline float-right mb-0">
-                        
 
-                       
-                      
 
-                        <li class="list-inline-item dropdown notification-list">
-                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#" role="button"
-                               aria-haspopup="false" aria-expanded="false">
-                               <?php
-$admid=$_SESSION['cmssid'];
-$ret=mysqli_query($con,"select StaffName from tblstaff where ID='$admid'");
-$row=mysqli_fetch_array($ret);
-$name=$row['StaffName'];
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  
+}
 
-?>
-                                <img src="assets/images/users/DR5Logow.png" alt="user" class="rounded-circle">
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
-                                                 
-     
-                                <div class="dropdown-item noti-title">
-                                    <h5 class="text-overflow"><small>Welcome ! <?php echo $name; ?></small> </h5>
-                                </div>
+.header img {
+  width: 100px;
+  height: 110px;
+  position: absolute;
+  top: -10px; 
+   left: 5vw;
+   padding-bottom: 9px;
 
-                                <!-- item-->
-                                <a href="staffprofile.php" class="dropdown-item notify-item">
-                                    <i class="zmdi zmdi-account-circle"></i> <span>Profile</span>
-                                </a>
 
-                                <!-- item-->
-                                <a href="changepassword.php" class="dropdown-item notify-item">
-                                    <i class="zmdi zmdi-settings"></i> <span>Change Password</span>
-                                </a>
+}
 
-                                <!-- item-->
-                                
+.header a.logo {
+  font-size: 15px;
+  font-weight: bold;
 
-                                <!-- item-->
-                                <a href="logout.php" class="dropdown-item notify-item">
-                                    <i class="zmdi zmdi-power"></i> <span>Logout</span>
-                                </a>
 
-                            </div>
-                        </li>
+}
 
-                    </ul>
+.header a:hover {
+  background-color: #ddd;
+  color: black;
+}
 
-                    <ul class="list-inline menu-left mb-0">
-                        <li class="float-left">
-                            <button class="button-menu-mobile open-left waves-light waves-effect">
-                                <i class="zmdi zmdi-menu"></i>
-                            </button>
-                        </li>
-                        
-                    </ul>
+.header-right {
+  float: right;
+}
 
-                </nav>
+@media screen and (max-width: 500px) {
+  .header a {
+    float: none;
+    display: block;
+    text-align: left;
+  }
+  
+  .header-right {
+    float: none;
+  }
+}
+</style>
+</head>
 
+            <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+              <div class="header">
+  <img src="includes\DR5Logow.png" alt="logo" />
+        <div class="container">
+      <div class="row align-items-center position-relative">
+  <div class="header-right">
+  </div>
             </div>
-            <!-- Top Bar End -->
+           <body>
+</div>
+            <div class="col-12" style="flex: 1; text-align: right;">
+              <nav class="site-navigation text-right ml-auto " role="navigation">
+                <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
+                  <li><a href="#home-section" class="nav-link">Home</a></li>
+                 <li><a href="#about-section" class="nav-link">About Us</a></li>
+<li><a href="#branch-section" class="nav-link">Branch</a></li>
+ <li><a href="#contact-section" class="nav-link">Contact</a></li>
+ <li class="has-children">
+                    <a href="#about-section" class="nav-link">Complaint</a>
+                    <ul class="dropdown arrow-top">
+                      <li><a href="raise-complaint.php" class="nav-link">Raise Complaint</a></li>
+                      <li><a href="track-complain.php" class="nav-link">Track Complaint</a></li>
+                    </ul>
+                  </li>
+<li><a href="staff/index.php" class="nav-link">Employee</a></li>
+<li><a href="admin/index.php" class="nav-link">Admin</a></li>
+                </ul>
+              </nav>
+            </div>
+            </div>
+            </div>
+            <div class="toggle-button d-inline-block d-lg-none"><a href="#" class="site-menu-toggle py-5 js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+          </div>
+        </div>
+      </header>
