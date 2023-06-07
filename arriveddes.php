@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-if (strlen($_SESSION['cmssid']==0)) {
+if (strlen($_SESSION['cmsaid']==0)) {
   header('location:logout.php');
   } else{
 
@@ -13,10 +13,8 @@ if (strlen($_SESSION['cmssid']==0)) {
 <html lang="en">
 
     <head>
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
-
         <!-- App title -->
-        <title>Manage Courier</title>
+        <title>CMS Courier</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />

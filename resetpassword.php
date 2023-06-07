@@ -10,7 +10,7 @@ if(isset($_POST['submit']))
     $email=$_SESSION['email'];
     $password=md5($_POST['newpassword']);
 
-        $query=mysqli_query($con,"update tblstaff set StaffPassword='$password'  where  StaffEmail='$email' && StaffMobilenumber='$contactno' ");
+        $query=mysqli_query($con,"update tbladmin set Password='$password'  where  Email='$email' && MobileNumber='$contactno' ");
    if($query)
    {
 echo "<script>alert('Password successfully changed');</script>";
@@ -26,7 +26,8 @@ session_destroy();
 <html lang="en">
 
     <head>
-        <title>CMS Forgot Password</title>
+        <!-- App title -->
+        <title>CMS Reset Password</title>
 
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />

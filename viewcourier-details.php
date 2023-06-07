@@ -7,14 +7,17 @@ if (strlen($_SESSION['cmsaid']==0)) {
   } else{
 
 
+  
 
   ?>
+
+
+
 <!doctype html>
 <html lang="en">
 
     <head>
-        <!-- App title -->
-        <title>CMS Courier</title>
+        <title>View Courier</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -53,43 +56,178 @@ if (strlen($_SESSION['cmsaid']==0)) {
                             <div class="col-12">
                                 <div class="card-box">
                                     <h4 class="m-t-0 header-title">Courier View</h4>
-                                    
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                        <thead>
-                                        <tr>
-                                            <tr>
-              <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
-            
-                   <th>Action</th>
-                </tr>
-                                        </tr>
-                                        </thead>
+ <?php if($msg){?>                                   
+<div class="alert alert-success" role="alert">
+<strong>Well done!</strong> <?php echo $msg;?>
+</div>
+<?php }?>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$cid=$_GET['editid'];
+$tid=$_GET['tid'];
+$ret=mysqli_query($con,"select * from tblcourier where ID='$cid' || RefNumber='$tid' ");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
 ?>
-              
-                <tr>
-                  <td><?php echo $cnt;?></td>
-            
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
-                </tr>
-                <?php 
-$cnt=$cnt+1;
-}?>
 
-                                        
-                                    </table>
+    <p><strong>Reference Number:</strong> <?php  echo $row['RefNumber'];?></p>
+  <p><strong>Courier Date :</strong> <?php  echo $row['CourierDate'];?></p>
+    <div class="row">                                    
+<div class="col-6">
+
+
+      <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">    
+      <tr>
+        <th style="text-align: center" colspan="2">Sender Details</th>
+      </tr>    
+
+   <tr>
+    <th>Sender Branch</th>
+    <td><?php  echo $row['SenderBranch'];?></td>
+  </tr>
+  <tr>
+    <th>Sender Name</th>
+    <td><?php  echo $row['SenderName'];?></td>
+  </tr>
+  <tr>
+    <th>Sender Contact Number</th>
+    <td><?php  echo $row['SenderContactnumber'];?></td>
+  </tr>
+  <tr>
+    <th>Sender Address</th>
+    <td><?php  echo $row['SenderAddress'];?></td>
+  </tr>
+  <tr>
+    <th>Sender City</th>
+    <td><?php  echo $row['SenderCity'];?></td>
+  </tr>
+  <tr>
+    <th>Sender State</th>
+    <td><?php  echo $row['SenderState'];?></td>
+  </tr>
+  <tr>
+    <th>Sender Pincode</th>
+    <td><?php  echo $row['SenderPincode'];?></td>
+  </tr>
+  <tr>
+    <th>Sender Country</th>
+    <td><?php  echo $row['SenderCountry'];?></td>
+  </tr>
+</table>
+</div>
+<div class="col-6">
+  <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+       <tr>
+        <th style="text-align: center" colspan="2">Recipient Details</th>
+      </tr>  
+
+  <tr>
+    <th>Recipient Name</th>
+    <td><?php  echo $row['RecipientName'];?></td>
+  </tr>
+  <tr>
+    <th>Recipient Contact Number</th>
+    <td><?php  echo $row['RecipientContactnumber'];?></td>
+  </tr>
+  <tr>
+    <th>Recipient Address</th>
+    <td><?php  echo $row['RecipientAddress'];?></td>
+  </tr>
+  <tr>
+    <th>Recipient City</th>
+    <td><?php  echo $row['RecipientCity'];?></td>
+  </tr>
+  <tr>
+    <th>Recipient State</th>
+    <td><?php  echo $row['RecipientState'];?></td>
+  </tr>
+  <tr>
+    <th>Recipient Pincode</th>
+    <td><?php  echo $row['RecipientPincode'];?></td>
+  </tr>
+  <tr>
+    <th>Recipient Country</th>
+    <td><?php  echo $row['RecipientCountry'];?></td>
+  </tr>
+</table>
+</div></div>
+<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+  <tr>
+    <th>Courier Description</th>
+    <td><?php  echo $row['CourierDes'];?></td>
+  </tr>
+  <tr>
+    <th>Parcel Weight</th>
+    <td><?php  echo $row['ParcelWeight'];?></td>
+  </tr>
+  <tr>
+    <th>Parcel Dimension Length</th>
+    <td><?php  echo $row['ParcelDimensionlen'];?></td>
+  </tr>
+  <tr>
+    <th>Parcel Dimension Width</th>
+    <td><?php  echo $row['ParcelDimensionwidth'];?></td>
+  </tr>
+  <tr>
+    <th>Parcel Dimension Height</th>
+    <td><?php  echo $row['ParcelDimensionheight'];?></td>
+  </tr>
+  <tr>
+    <th>Parcel Price</th>
+    <td><?php  echo $row['ParcelPrice'];?></td>
+  </tr>
+
+  
+  
+
+<tr>
+    <th>Status</th>
+    <td><?php  if($row['Status']=='0'){
+echo "Not Picked yet";
+}  else {
+ echo  $pstatus=$row['Status'];
+} ;?></td>
+  </tr>
+
+  </tr>
+</table>
+<?php } ?>
+
+<?php  if($row['Status']!='0'){
+$ret=mysqli_query($con,"select tblcouriertracking.remark,tblcouriertracking.status as corstatus,tblcouriertracking.StatusDate from tblcourier  left join tblcouriertracking on tblcouriertracking.CourierId=tblcourier.ID where tblcourier.ID='$cid'");
+$cnt=1;
+
+
+ ?>
+<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+  <tr align="center">
+   <th colspan="4" >Courier History</th> 
+  </tr>
+  <tr>
+    <th>#</th>
+<th>Remark</th>
+<th>Status</th>
+<th>Time</th>
+</tr>
+<?php  
+while ($row=mysqli_fetch_array($ret)) { 
+  ?>
+<tr>
+  <td><?php echo $cnt;?></td>
+ <td><?php  echo $row['remark'];?></td> 
+  <td><?php  echo $row['corstatus'];?></td> 
+   <td><?php  echo $row['StatusDate'];?></td> 
+</tr>
+<?php $cnt=$cnt+1;} ?>
+</table>
+<?php  }  
+if ($pstatus!='Delivered'){
+?> 
+  
+
+<?php } ?>
+         
+
                                 </div>
                             </div>
                         </div> <!-- end row -->

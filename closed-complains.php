@@ -13,7 +13,6 @@ if (strlen($_SESSION['cmsaid']==0)) {
 <html lang="en">
 
     <head>
-        <!-- App title -->
         <title>CMS Courier</title>
 
         <!-- DataTables -->
@@ -52,24 +51,24 @@ if (strlen($_SESSION['cmsaid']==0)) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
+                                    <h4 class="m-t-0 header-title">Closed Complaints</h4>
                                     
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
                                             <tr>
               <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
+              <th>Ticket Number</th>
+              <th>Tracking Number</th>
+              <th>Status</th>
+              <th>Complain Date</th>
             
                    <th>Action</th>
                 </tr>
                                         </tr>
                                         </thead>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$ret=mysqli_query($con,"select *from tblcomplains where Status='Closed'");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
@@ -78,11 +77,17 @@ while ($row=mysqli_fetch_array($ret)) {
                 <tr>
                   <td><?php echo $cnt;?></td>
             
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
+                  <td><?php  echo $row['TicketNumber'];?></td>
+                  <td><a href="viewcourier-details.php?tid=<?php echo $row['TrackingNumber'];?>" target="_blank"><?php  echo $row['TrackingNumber'];?></a></td>
+                  <?php if($row['Status']==""){ ?>
+
+                     <td><?php echo "Not Updated Yet"; ?></td>
+<?php } else { ?>
+                               
+                <td><?php  echo $row['Status'];?></td>
+                <?php } ?> 
+                <td><?php  echo $row['CompDate'];?></td>
+                                  <td><a href="view-complains.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
                 </tr>
                 <?php 
 $cnt=$cnt+1;

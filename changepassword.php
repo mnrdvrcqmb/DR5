@@ -3,21 +3,20 @@ session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
 error_reporting(0);
-if (strlen($_SESSION['cmssid']==0)) {
+if (strlen($_SESSION['cmsaid']==0)) {
   header('location:logout.php');
   } else{
 if(isset($_POST['submit']))
 {
-$staffid=$_SESSION['cmssid'];
+$adminid=$_SESSION['cmsaid'];
 $cpassword=md5($_POST['currentpassword']);
 $newpassword=md5($_POST['newpassword']);
-$query=mysqli_query($con,"select ID from tblstaff where ID='$staffid' and   StaffPassword='$cpassword'");
+$query=mysqli_query($con,"select ID from tbladmin where ID='$adminid' and   Password='$cpassword'");
 $row=mysqli_fetch_array($query);
 if($row>0){
-$ret=mysqli_query($con,"update tblstaff set StaffPassword='$newpassword' where ID='$staffid'");
+$ret=mysqli_query($con,"update tbladmin set Password='$newpassword' where ID='$adminid'");
 echo '<script>alert("Your password successully changed")</script>';
  echo "<script>window.location.href ='changepassword.php'</script>";
-
 } else {
 
 echo '<script>alert("Your current password is wrong")</script>';
@@ -30,7 +29,7 @@ echo '<script>alert("Your current password is wrong")</script>';
   
   ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
     <head>
@@ -100,11 +99,12 @@ return true;
                             <div class="col-12">
                                 <div class="card-box">
    
+
                                    <h4 class="header-title m-t-0 m-b-30">Change Password</h4>
 <form name="changepassword" method="post" onsubmit="return checkpass();"> 
                                     <div class="form-group row">
                                       
-                                   
+                                    
                                         <label for="example-text-input" class="col-2 col-form-label">Current Password</label>
                                         <div class="col-10">
                                             <input class="form-control" type="password" value="" id="password" name="currentpassword" required="true">
@@ -122,6 +122,12 @@ return true;
                                             <input class="form-control" type="password" value="" id="password" name="confirmpassword" required="true">
                                         </div>
                                     </div>
+                                                                
+                                                                                                           
+                                    
+                                     
+                        
+                                    
                                     
                                     <div class="form-group row">
                                         

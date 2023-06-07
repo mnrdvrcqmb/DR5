@@ -14,7 +14,7 @@ if (strlen($_SESSION['cmsaid']==0)) {
 
     <head>
         <!-- App title -->
-        <title>CMS Courier</title>
+        <title>DR5 Branch</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -52,43 +52,39 @@ if (strlen($_SESSION['cmsaid']==0)) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
+                                    <h4 class="m-t-0 header-title">Branch Detail</h4>
                                     
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
                                             <tr>
-              <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
-            
+                  <th>S.NO</th>
+                  <th>Branch Name</th>  
+              <th>Branch Contact Number</th>
+              <th>Branch Email</th>
                    <th>Action</th>
                 </tr>
                                         </tr>
                                         </thead>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$ret=mysqli_query($con,"select *from tblbranch");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
-
 ?>
-              
+
                 <tr>
                   <td><?php echo $cnt;?></td>
-            
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
+                  <td><?php  echo $row['BranchName'];?></td>
+                  <td><?php  echo $row['BranchContactnumber'];?></td>
+                <td><?php  echo $row['BranchEmail'];?></td>
+                  <td><a href="edit-branch-detail.php?editid=<?php echo $row['ID'];?>">Edit</a>
+                    <a href="remove-branch-detail.php?removeid=<?php echo $row['ID'];?>">Remove</a>
+                </td>
                 </tr>
                 <?php 
 $cnt=$cnt+1;
 }?>
-
-                                        
+    
                                     </table>
                                 </div>
                             </div>
@@ -97,12 +93,6 @@ $cnt=$cnt+1;
 
 </div></div>
 </div>
-
-
-
-       
-            
-
             <?php include_once('includes/footer.php');?>
 
 </div>

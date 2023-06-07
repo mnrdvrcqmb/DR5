@@ -7,47 +7,30 @@ if (strlen($_SESSION['cmsaid']==0)) {
   } else{
     if(isset($_POST['submit']))
   {
-
-$cmsaid=$_SESSION['cmsaid'];
- $branchname=$_POST['branchname'];
-
-$contnum=$_POST['contactnumber'];
-$bemail=$_POST['email'];
-$baddress=$_POST['address'];
-$bcity=$_POST['city'];
-$bstate=$_POST['state'];
-$bpincode=$_POST['pincode'];
-$bcountry=$_POST['country'];
- $query=mysqli_query($con,"insert into tblbranch(BranchName,BranchContactnumber,BranchEmail,BranchAddress,BranchCity,BranchState,BranchPincode,BranchCountry) value('$branchname','$contnum','$bemail','$baddress','$bcity','$bstate','$bpincode','$bcountry')");
-
+    $adminid=$_SESSION['cmsaid'];
+    $AName=$_POST['adminname'];
+  $mobno=$_POST['contactnumber'];
+  
+     $query=mysqli_query($con, "update tbladmin set AdminName ='$AName'where ID='$adminid'");
     if ($query) {
-    $msg="Branch Detail has been added.";
+   
+    echo '<script>alert("Admin profile has been updated.")</script>';
+    echo "<script>window.location.href ='adminprofile.php'</script>";
   }
   else
     {
-      $msg="Something Went Wrong. Please try again";
+      echo '<script>alert("Something Went Wrong. Please try again")</script>';
     }
-
-  
-}
-
-?>
-
+  }
+  ?>
 
 <!doctype html>
 <html lang="en">
 
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
-        <meta name="author" content="Coderthemes">
-
-        <!-- App Favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
 
         <!-- App title -->
-        <title>CMS Branches</title>
+        <title>CMS</title>
 
         <!-- Switchery css -->
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" />
@@ -83,7 +66,7 @@ $bcountry=$_POST['country'];
                         <div class="row">
                             <div class="col-xl-12">
                                 <div class="page-title-box">
-                                    <h4 class="page-title float-left">Branch Detail</h4>
+                                    <h4 class="page-title float-left">Admin Profile</h4>
 
                                     
 
@@ -100,72 +83,59 @@ $bcountry=$_POST['country'];
 
                             <div class="col-12">
                                 <div class="card-box">
-   <p style="font-size:16px; color:red" align="center"> <?php if($msg){
-    echo $msg;
-  }  ?> </p>
+   
 
-                                   <h4 class="header-title m-t-0 m-b-30">Branch Detail</h4>
+                                   <h4 class="header-title m-t-0 m-b-30">Admin Profile</h4>
+<form name="addbranch" method="post"> 
+                                    <div class="form-group row">
+                                      
+                                     <?php
+$adminid=$_SESSION['cmsaid'];
+$ret=mysqli_query($con,"select * from tbladmin where ID='$adminid'");
+$cnt=1;
+while ($row=mysqli_fetch_array($ret)) {
 
-                                    <div class="form-group row">
-                                       <form class="form-inline" name="abc" method="post"> 
-                                        <label for="example-text-input" class="col-2 col-form-label">Branch Name</label>
+?>
+                                        <label for="example-text-input" class="col-2 col-form-label">Admin Name</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="branchname" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="example-search-input" class="col-2 col-form-label">Branch Contact Number</label>
-                                        <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="contactnumber" maxlength="10" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="example-email-input" class="col-2 col-form-label">Branch Email</label>
-                                        <div class="col-10">
-                                            <input class="form-control" type="email" value="abc@example.com" id="" name="email" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="example-url-input" class="col-2 col-form-label">Branch Address</label>
-                                        <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="address" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="example-tel-input" class="col-2 col-form-label">Branch City</label>
-                                        <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="city" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="example-password-input" class="col-2 col-form-label">Branch State</label>
-                                        <div class="col-10">
-                                    <input class="form-control" type="text" value="" id="" name="state" required="true">
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label for="example-number-input" class="col-2 col-form-label">Branch Pincode</label>
-                                        <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="pincode" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['AdminName'];?>" id="" name="adminname" required="true">
                                         </div>
                                     </div>
                                      <div class="form-group row">
-                                        <label for="example-number-input" class="col-2 col-form-label">Branch Country</label>
+                                        <label for="example-search-input" class="col-2 col-form-label"> User Name</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="country" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['UserName'];?>" id="" name="username" required="true" readonly='true'>
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        <label for="example-search-input" class="col-2 col-form-label"> Contact Number</label>
+                                        <div class="col-10">
+                                            <input class="form-control" type="text" value="<?php  echo $row['MobileNumber'];?>" id="" name="contactnumber" maxlength="10" required="true" readonly='true'>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label for="example-email-input" class="col-2 col-form-label">Email</label>
+                                        <div class="col-10">
+                                            <input class="form-control" type="email" value="<?php  echo $row['Email'];?>" id="" name="email" required="true" readonly="true">
+                                        </div>
+                                    </div>
+                                  
                                     
-                                                                
+                                    
+                                     
+                                    
+                                        <?php } ?>
+                        
                                     
                                     
                                     <div class="form-group row">
                                         
                                         <div class="col-10">
-                                          <p style="text-align: center;">  <button type="submit" name="submit" class="btn btn-primary">Submit</button></p>
+                                          <p style="text-align: center;">  <button type="submit" name="submit" class="btn btn-primary">Update</button></p>
                                            
                                         </div>
-                                        
+                                        </div>
+
                                     </div>
                                 </form>
                                 </div>

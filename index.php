@@ -5,19 +5,14 @@ include('includes/dbconnection.php');
 
 if(isset($_POST['login']))
   {
-    $staffemail=$_POST['staffemail'];
+    $adminuser=$_POST['username'];
     $password=md5($_POST['password']);
-    $query=mysqli_query($con,"select ID,status from tblstaff where  StaffEmail='$staffemail' && StaffPassword='$password' ");
+    $query=mysqli_query($con,"select ID from tbladmin where  UserName='$adminuser' && Password='$password' ");
     $ret=mysqli_fetch_array($query);
-if($ret>0){
-$status=$ret['status'];
-if($status=='1'){
-      $_SESSION['cmssid']=$ret['ID'];
+    if($ret>0){
+      $_SESSION['cmsaid']=$ret['ID'];
      header('location:dashboard.php');
-    } else {
-          $msg="Your account is blocked contact administrator.";
     }
-}
     else{
     $msg="Invalid Details.";
     }
@@ -30,7 +25,8 @@ if($status=='1'){
 <html lang="en">
 
     <head>
-        <title>CMS Login</title>
+  
+        <title>CMS Admin Login</title>
 
         <!-- Bootstrap CSS -->
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -55,7 +51,7 @@ if($status=='1'){
                     <div class="text-center m-t-20">
                         <a href="../index.php" class="logo">
                             <i class="zmdi zmdi-group-work icon-c-logo"></i>
-                            <span>CMS|| Staff Login</span>
+                            <span>CMS|| Admin Login</span>
                         </a>
                     </div>
                     <div class="m-t-10 p-20">
@@ -71,7 +67,7 @@ if($status=='1'){
 
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control" type="email" required="" name="staffemail" placeholder="Staff Email">
+                                    <input class="form-control" type="text" required="" name="username" placeholder="Username">
                                 </div>
                             </div>
 

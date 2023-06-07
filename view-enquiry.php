@@ -5,16 +5,18 @@ include('includes/dbconnection.php');
 if (strlen($_SESSION['cmsaid']==0)) {
   header('location:logout.php');
   } else{
-
-
-
+   $vid=$_GET['viewid'];
+    $isread=1;
+   $query=mysqli_query($con, "update tblcontact set IsRead='$isread' where ID='$vid'");
   ?>
+
+
+
 <!doctype html>
 <html lang="en">
 
     <head>
-        <!-- App title -->
-        <title>CMS Courier</title>
+        <title>View Enquiry</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -52,45 +54,42 @@ if (strlen($_SESSION['cmsaid']==0)) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
-                                    
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                        <thead>
-                                        <tr>
-                                            <tr>
-              <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
-            
-                   <th>Action</th>
-                </tr>
-                                        </tr>
-                                        </thead>
+                                    <h4 class="m-t-0 header-title">View Enquiry</h4>
+                                  
+
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$vid=$_GET['viewid'];
+$ret=mysqli_query($con,"select * from tblcontact where ID='$vid'");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
 ?>
-              
-                <tr>
-                  <td><?php echo $cnt;?></td>
-            
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
-                </tr>
-                <?php 
-$cnt=$cnt+1;
-}?>
 
-                                        
-                                    </table>
-                                </div>
+       
+<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+ 
+  <tr>
+    <th>Name</th>
+    <td><?php  echo $row['Name'];?></td>
+  </tr>
+  <tr>
+    <th>Email</th>
+    <td><?php  echo $row['Email'];?></td>
+  </tr>
+   <tr>
+    <th>Mobile Number</th>
+    <td><?php  echo $row['MobileNumber'];?></td>
+  </tr>
+ <tr>
+    <th>Message</th>
+    <td><?php  echo $row['Message'];?></td>
+  </tr>
+ <tr>
+    <th>Enquiry Date</th>
+    <td><?php  echo $row['MsgDate'];?></td>
+  </tr>
+ <?php } ?>
+</table>                      </div>
                             </div>
                         </div> <!-- end row -->
 

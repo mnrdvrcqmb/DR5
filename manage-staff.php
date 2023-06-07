@@ -6,7 +6,19 @@ if (strlen($_SESSION['cmsaid']==0)) {
   header('location:logout.php');
   } else{
 
+// code Inactive
+if(isset($_GET['inactiveid'])){
+$rowid=intval($_GET['inactiveid']);
+$query=mysqli_query($con,"update tblstaff set status='0' where ID='$rowid'");
+$msg="Accout Inactive successfully";
+}
 
+// code active
+if(isset($_GET['activeid'])){
+$rowid=intval($_GET['activeid']);
+$query=mysqli_query($con,"update tblstaff set status='1' where ID='$rowid'");
+$msg="Accout Active successfully";
+}
 
   ?>
 <!doctype html>
@@ -14,7 +26,7 @@ if (strlen($_SESSION['cmsaid']==0)) {
 
     <head>
         <!-- App title -->
-        <title>CMS Courier</title>
+        <title>CMS Staff</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -47,29 +59,38 @@ if (strlen($_SESSION['cmsaid']==0)) {
            <?php include_once('includes/leftbar.php');?>
 <div class="content-page">
                 <!-- Start content -->
+
+
+           
                 <div class="content">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
+                                    <h4 class="m-t-0 header-title">Staff Details</h4>
                                     
+                                     <?php if($msg){?>                                   
+<div class="alert alert-success" role="alert">
+<strong>Message ! </strong> <?php echo $msg;?>
+</div>
+<?php }?>    
+
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
                                             <tr>
-              <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
+                  <th>S.NO</th>
             
+                  <th>Branch Name</th>
+              <th>Staff Name</th>
+              <th>Staff Number</th>
+              
                    <th>Action</th>
                 </tr>
                                         </tr>
                                         </thead>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$ret=mysqli_query($con,"select *from tblstaff");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
@@ -78,11 +99,16 @@ while ($row=mysqli_fetch_array($ret)) {
                 <tr>
                   <td><?php echo $cnt;?></td>
             
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
+                  <td><?php  echo $row['BranchName'];?></td>
+                  <td><?php  echo $row['StaffName'];?></td>
+                <td><?php  echo $row['StaffMobilenumber'];?></td>
+                  <td><a href="edit-staff-detail.php?editid=<?php echo $row['ID'];?>">Edit</a> | 
+<?php if($row['status']=="1"){?>
+<a href="manage-staff.php?inactiveid=<?php echo $row['ID'];?>" title="Inactive this account" onclick="return confirm('Do you really want to inactive this account.');">Inactive</a>
+<?php } else {?>
+<a href="manage-staff.php?activeid=<?php echo $row['ID'];?>" title="Active this account" onclick="return confirm('Do you really want to Active this account.');">Active</a>
+    <?php } ?>
+                  </td>
                 </tr>
                 <?php 
 $cnt=$cnt+1;

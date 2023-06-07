@@ -8,7 +8,7 @@ if(isset($_POST['submit']))
     $contactno=$_POST['contactno'];
     $email=$_POST['email'];
 
-        $query=mysqli_query($con,"select ID from tblstaff where  StaffEmail='$email' and StaffMobilenumber='$contactno' ");
+        $query=mysqli_query($con,"select ID from tbladmin where  Email='$email' and MobileNumber='$contactno' ");
     $ret=mysqli_fetch_array($query);
     if($ret>0){
       $_SESSION['contactno']=$contactno;
@@ -27,6 +27,7 @@ if(isset($_POST['submit']))
 <html lang="en">
 
     <head>
+        <!-- App title -->
         <title>CMS Forgot Password</title>
 
         <!-- Bootstrap CSS -->
@@ -68,13 +69,13 @@ if(isset($_POST['submit']))
 
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control" type="email" required="" name="email" placeholder="Staff Email">
+                                    <input class="form-control" type="email" required="" name="email" placeholder="Email">
                                 </div>
                             </div>
 
                             <div class="form-group row">
                                 <div class="col-12">
-                                    <input class="form-control" type="text" name="contactno" required="" placeholder="Staff Mobile Number">
+                                    <input class="form-control" type="text" name="contactno" required="" placeholder="Mobile Number">
                                 </div>
                             </div>
 

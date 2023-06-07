@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-if (strlen($_SESSION['cmssid']==0)) {
+if (strlen($_SESSION['cmsaid']==0)) {
   header('location:logout.php');
   } else{
 
@@ -68,7 +68,7 @@ if (strlen($_SESSION['cmssid']==0)) {
                                         </tr>
                                         </thead>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier");
+$ret=mysqli_query($con,"select *from tblcourier where Status='' ||  Status is null");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 

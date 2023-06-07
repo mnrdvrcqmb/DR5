@@ -13,8 +13,7 @@ if (strlen($_SESSION['cmsaid']==0)) {
 <html lang="en">
 
     <head>
-        <!-- App title -->
-        <title>CMS Courier</title>
+        <title>CMS Reports Counts</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -52,44 +51,74 @@ if (strlen($_SESSION['cmsaid']==0)) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
-                                    
+                                    <h4 class="m-t-0 header-title">Report Counts</h4>
+                                    <?php
+$fdate=$_POST['fromdate'];
+$tdate=$_POST['todate'];
+?>
+<h5 align="center" style="color:blue">Courier Request Count Report from <?php echo $fdate?> to <?php echo $tdate?></h5>
+<hr />
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
-                                        <tr>
-                                            <tr>
-              <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
-            
-                   <th>Action</th>
-                </tr>
-                                        </tr>
-                                        </thead>
- <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+<tr>
+<th>S.NO</th>
+<th>Month/Year</th>
+<th>Total Courier Listed</th>
+<th>Not Picked up yet</th>
+<th>Total Courier Pickup</th>
+<th>Total Shipped</th>
+<th>Total Intransit</th>
+<th>Total Arrived at Destination</th>
+<th>Out for Delivery</th>
+<th>Total Delivered</th>
+</tr>
+</thead>
+<?php
+$ret=mysqli_query($con,"select month(CourierDate) as lmonth,year(CourierDate) as lyear,count(ID) as totalcount,count(if(Status='' || Status='' is null,0,null)) as nopickupyet,count(if(Status='Courier Pickup',0,null)) as courierpickup,count(if(Status='Shipped',0,null)) as shipped,count(if(Status='Intransit',0,null)) as intransit,count(if(Status='Arrived at Destination',0,null)) as arides, count(if(Status='Out for Delivery',0,null)) as outdel,count(if(Status='Delivered',0,null)) as delivered from tblcourier where CourierDate between '$fdate' and '$tdate' group by lmonth,lyear");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
 ?>
               
                 <tr>
-                  <td><?php echo $cnt;?></td>
-            
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
+                    <td><?php  echo $cnt;?></td>
+                  <td><?php  echo $row['lmonth']."/".$row['lyear'];?></td>
+              <td><?php  echo $total=$row['totalcount'];?></td>
+              <td><?php  echo $npytotal=$row['nopickupyet'];?></td>
+                  <td><?php  echo $ntotal=$row['courierpickup'];?></td>
+                  <td><?php  echo $atotl=$row['shipped'];?></td>
+                <td><?php  echo $intotal=$row['intransit'];?></td>
+                <td><?php  echo $aritotal=$row['arides'];?></td>
+                 <td><?php  echo $outtotal=$row['outdel'];?></td>
+                 <td><?php  echo $deltotal=$row['delivered'];?></td>
                 </tr>
-                <?php 
-$cnt=$cnt+1;
+                <?php
+$ftotal+=$total;
+$ttlny+=$npytotal;
+$fntotal+=$ntotal;
+$fatotl+=$atotl;
+$fintotal+=$intotal;
+$faritotal+=$aritotal;
+$fouttotal+=$outtotal;
+$fdeltotal+=$deltotal;
+$cnt++;
 }?>
+   
+   <tr>
+                  <th colspan="2">Total </th>
+              <td><?php  echo $ftotal;?></td>
+              <td><?php echo $ttlny;?></td>
+                  <td><?php  echo $fntotal;?></td>
+                  <td><?php  echo $fatotl;?></td>
+                <td><?php  echo $fintotal;?></td>
+                <td><?php  echo $faritotal;?></td>
+                 <td><?php  echo $fouttotal;?></td>
+                 <td><?php  echo $fdeltotal;?></td>
+                 
+                </tr>   
 
-                                        
-                                    </table>
+</table>
+
                                 </div>
                             </div>
                         </div> <!-- end row -->

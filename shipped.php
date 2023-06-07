@@ -2,7 +2,7 @@
 session_start();
 error_reporting(0);
 include('includes/dbconnection.php');
-if (strlen($_SESSION['cmssid']==0)) {
+if (strlen($_SESSION['cmsaid']==0)) {
   header('location:logout.php');
   } else{
 
@@ -13,7 +13,6 @@ if (strlen($_SESSION['cmssid']==0)) {
 <html lang="en">
 
     <head>
-
         <title>CMS Courier</title>
 
         <!-- DataTables -->

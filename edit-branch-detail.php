@@ -8,7 +8,7 @@ if (strlen($_SESSION['cmsaid']==0)) {
     if(isset($_POST['submit']))
   {
 
-$cmsaid=$_SESSION['cmsaid'];
+$eid=$_GET['editid'];
  $branchname=$_POST['branchname'];
 
 $contnum=$_POST['contactnumber'];
@@ -18,14 +18,15 @@ $bcity=$_POST['city'];
 $bstate=$_POST['state'];
 $bpincode=$_POST['pincode'];
 $bcountry=$_POST['country'];
- $query=mysqli_query($con,"insert into tblbranch(BranchName,BranchContactnumber,BranchEmail,BranchAddress,BranchCity,BranchState,BranchPincode,BranchCountry) value('$branchname','$contnum','$bemail','$baddress','$bcity','$bstate','$bpincode','$bcountry')");
+ $query=mysqli_query($con,"update tblbranch set BranchName='$branchname',BranchContactnumber='$contnum',BranchEmail='$bemail',BranchAddress='$baddress',BranchCity='$bcity',BranchState='$bstate',BranchPincode='$bpincode',BranchCountry='$bcountry' where  ID='$eid'");
 
     if ($query) {
-    $msg="Branch Detail has been added.";
+    echo '<script>alert("Branch Detail Has been updated")</script>';
+    echo "<script>window.location.href ='manage-branch.php'</script>";
   }
   else
     {
-      $msg="Something Went Wrong. Please try again";
+     echo '<script>alert("Something Went Wrong. Please try again")</script>';
     }
 
   
@@ -38,15 +39,6 @@ $bcountry=$_POST['country'];
 <html lang="en">
 
     <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="A fully featured admin theme which can be used to build CRM, CMS, etc.">
-        <meta name="author" content="Coderthemes">
-
-        <!-- App Favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
-
-        <!-- App title -->
         <title>CMS Branches</title>
 
         <!-- Switchery css -->
@@ -105,67 +97,76 @@ $bcountry=$_POST['country'];
   }  ?> </p>
 
                                    <h4 class="header-title m-t-0 m-b-30">Branch Detail</h4>
-
+<form name="addbranch" method="post"> 
                                     <div class="form-group row">
-                                       <form class="form-inline" name="abc" method="post"> 
+                                      
+                                        <?php
+ $cid=$_GET['editid'];
+$ret=mysqli_query($con,"select * from  tblbranch where ID='$cid'");
+$cnt=1;
+while ($row=mysqli_fetch_array($ret)) {
+
+?>
                                         <label for="example-text-input" class="col-2 col-form-label">Branch Name</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="branchname" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['BranchName'];?>" id="" name="branchname" required="true">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="example-search-input" class="col-2 col-form-label">Branch Contact Number</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="contactnumber" maxlength="10" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['BranchContactnumber'];?>" id="" name="contactnumber" maxlength="10" required="true" pattern="[0-9]+">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="example-email-input" class="col-2 col-form-label">Branch Email</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="email" value="abc@example.com" id="" name="email" required="true">
+                                            <input class="form-control" type="email" value="<?php  echo $row['BranchEmail'];?>" id="" name="email" required="true" >
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="example-url-input" class="col-2 col-form-label">Branch Address</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="address" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['BranchAddress'];?>" id="" name="address" required="true">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="example-tel-input" class="col-2 col-form-label">Branch City</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="city" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['BranchCity'];?>" id="" name="city" required="true">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="example-password-input" class="col-2 col-form-label">Branch State</label>
                                         <div class="col-10">
-                                    <input class="form-control" type="text" value="" id="" name="state" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['BranchState'];?>" id="" name="state" required="true">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <label for="example-number-input" class="col-2 col-form-label">Branch Pincode</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="pincode" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['BranchPincode'];?>" id="" name="pincode" required="true" maxlength="6" pattern="[0-9]+">
                                         </div>
                                     </div>
                                      <div class="form-group row">
                                         <label for="example-number-input" class="col-2 col-form-label">Branch Country</label>
                                         <div class="col-10">
-                                            <input class="form-control" type="text" value="" id="" name="country" required="true">
+                                            <input class="form-control" type="text" value="<?php  echo $row['BranchCountry'];?>" id="" name="country" required="true">
                                         </div>
                                     </div>
                                     
-                                                                
+                                        <?php } ?>
+                        
                                     
                                     
                                     <div class="form-group row">
                                         
                                         <div class="col-10">
-                                          <p style="text-align: center;">  <button type="submit" name="submit" class="btn btn-primary">Submit</button></p>
+                                          <p style="text-align: center;">  <button type="submit" name="submit" class="btn btn-primary">Update</button></p>
                                            
                                         </div>
-                                        
+                                        </div>
+
                                     </div>
                                 </form>
                                 </div>

@@ -13,8 +13,7 @@ if (strlen($_SESSION['cmsaid']==0)) {
 <html lang="en">
 
     <head>
-        <!-- App title -->
-        <title>CMS Courier</title>
+        <title>CMS Read Enquiry</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -52,24 +51,24 @@ if (strlen($_SESSION['cmsaid']==0)) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
+                                    <h4 class="m-t-0 header-title">Read Enquiry View</h4>
                                     
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
                                             <tr>
               <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Mobile Number</th>
+              <th>Enquiry Date</th>
             
                    <th>Action</th>
                 </tr>
                                         </tr>
                                         </thead>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$ret=mysqli_query($con,"select *from tblcontact where IsRead='1'");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
@@ -78,11 +77,12 @@ while ($row=mysqli_fetch_array($ret)) {
                 <tr>
                   <td><?php echo $cnt;?></td>
             
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
+                  <td><?php  echo $row['Name'];?></td>
+                  <td><?php  echo $row['Email'];?></td>
+                <td><?php  echo $row['MobileNumber'];?></td>
+              
+                <td><?php  echo $row['MsgDate'];?></td>
+                                  <td><a href="view-enquiry.php?viewid=<?php echo $row['ID'];?>">View Detail</a></td>
                 </tr>
                 <?php 
 $cnt=$cnt+1;

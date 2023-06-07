@@ -13,8 +13,7 @@ if (strlen($_SESSION['cmsaid']==0)) {
 <html lang="en">
 
     <head>
-        <!-- App title -->
-        <title>CMS Courier</title>
+        <title>Sales Report</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -52,24 +51,27 @@ if (strlen($_SESSION['cmsaid']==0)) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
-                                    
+                                    <h4 class="m-t-0 header-title">Sales Report</h4>
+                                    <?php
+$fdate=$_POST['fromdate'];
+$tdate=$_POST['todate'];
+$rtype=$_POST['requesttype'];
+?>
+<h5 align="center" style="color:blue">Sales Report from <?php echo $fdate?> to <?php echo $tdate?></h5>
+<hr />
+<?php if($rtype=="dtwise"){?>
                                     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                         <thead>
                                         <tr>
                                             <tr>
               <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
-            
-                   <th>Action</th>
+              <th>Date</th>
+              <th>Sale Amount</th>
                 </tr>
                                         </tr>
                                         </thead>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$ret=mysqli_query($con,"select date(CourierDate) as cdate,sum(ParcelPrice) as totalsum from tblcourier where CourierDate between '$fdate' and '$tdate' group by cdate");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
@@ -78,18 +80,61 @@ while ($row=mysqli_fetch_array($ret)) {
                 <tr>
                   <td><?php echo $cnt;?></td>
             
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
+                  <td><?php  echo $row['cdate'];?></td>
+                  <td><?php  echo $ttlsl=$row['totalsum'];?></td>
+           
+           
                 </tr>
-                <?php 
+                <?php
+                $totalsales+=$ttlsl; 
 $cnt=$cnt+1;
 }?>
 
+ <tr>
+  <th colspan="2" style="text-align:center">Grand Total</th>     
+  <td><?php echo $totalsales;?></td>
+ </tr>     
+
+                                    </table>
+
+<?php } elseif($rtype=="mtwise"){ ?>
+
+     <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                        <thead>
+                                        <tr>
+                                            <tr>
+              <th>S.NO</th>
+              <th>Date</th>
+              <th>Sale Amount</th>
+                </tr>
+                                        </tr>
+                                        </thead>
+ <?php
+$ret=mysqli_query($con,"select month(CourierDate) as rmonth,year(CourierDate) as ryear,sum(ParcelPrice) as totalsum from tblcourier where CourierDate between '$fdate' and '$tdate' group by rmonth,ryear");
+$cnt=1;
+while ($row=mysqli_fetch_array($ret)) {
+
+?>
+              
+                <tr>
+                  <td><?php echo $cnt;?></td>
+            
+                  <td><?php  echo $row['rmonth']."-".$row['ryear'];?></td>
+                  <td><?php  echo $ttlsl=$row['totalsum'];?></td>
+           
+           
+                </tr>
+                <?php 
+      $totalsales+=$ttlsl;                
+$cnt=$cnt+1;
+}?>
+<tr>
+  <th colspan="2" style="text-align:center">Grand Total</th>   
+  <td><?php echo $totalsales;?></td>
+ </tr>
                                         
                                     </table>
+                                    <?php } ?>                                
                                 </div>
                             </div>
                         </div> <!-- end row -->

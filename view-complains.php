@@ -6,15 +6,39 @@ if (strlen($_SESSION['cmsaid']==0)) {
   header('location:logout.php');
   } else{
 
+if(isset($_POST['submit']))
+  {
+    
+    $cid=$_GET['editid'];
+      $remark=$_POST['remark'];
+      $status=$_POST['status'];
+ 
+    
+   
+   $query=mysqli_query($con, "update  tblcomplains set Remark='$remark', Status='$status' where ID='$cid'");
+    if ($query) {
+   echo '<script>alert("Remark and Status has been updated.")</script>';
+   echo "<script>window.location.href ='closed-complains.php'</script>";
+  }
+  else
+    {
+      echo '<script>alert("Something Went Wrong. Please try again")</script>';
 
+    }
+
+  
+}
+  
 
   ?>
+
+
+
 <!doctype html>
 <html lang="en">
 
     <head>
-        <!-- App title -->
-        <title>CMS Courier</title>
+        <title>View Complains</title>
 
         <!-- DataTables -->
         <link href="../plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
@@ -52,44 +76,110 @@ if (strlen($_SESSION['cmsaid']==0)) {
                         <div class="row">
                             <div class="col-12">
                                 <div class="card-box">
-                                    <h4 class="m-t-0 header-title">Courier View</h4>
-                                    
-                                    <table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                                        <thead>
-                                        <tr>
-                                            <tr>
-              <th>S.NO</th>
-              <th>Reference Number</th>
-              <th>Sender Name</th>
-              <th>Recipient Name</th>
-              <th>Courier Date</th>
-            
-                   <th>Action</th>
-                </tr>
-                                        </tr>
-                                        </thead>
+                                    <h4 class="m-t-0 header-title">Complaint Details</h4>
+ <?php if($msg){?>                                   
+<div class="alert alert-success" role="alert">
+<strong>Well done!</strong> <?php echo $msg;?>
+</div>
+<?php }?>
  <?php
-$ret=mysqli_query($con,"select *from tblcourier where Status='Out for Delivery'");
+$cid=$_GET['editid'];
+$ret=mysqli_query($con,"select * from tblcomplains where ID='$cid'");
 $cnt=1;
 while ($row=mysqli_fetch_array($ret)) {
 
 ?>
-              
-                <tr>
-                  <td><?php echo $cnt;?></td>
-            
-                  <td><?php  echo $row['RefNumber'];?></td>
-                  <td><?php  echo $row['SenderName'];?></td>
-                <td><?php  echo $row['RecipientName'];?></td>
-                <td><?php  echo $row['CourierDate'];?></td>
-                                  <td><a href="view-courier.php?editid=<?php echo $row['ID'];?>">View Detail</a></td>
-                </tr>
-                <?php 
-$cnt=$cnt+1;
-}?>
 
-                                        
-                                    </table>
+    <p><strong>Ticket Number:</strong> <?php  echo $row['TicketNumber'];?></p>
+  <p><strong>Complain Date :</strong> <?php  echo $row['CompDate'];?></p>
+    
+<table id="datatable" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+  <tr>
+    <th>Tracking Number</th>
+    <td><a href="view-courier.php?tid=<?php echo $row['TrackingNumber'];?>"><?php  echo $row['TrackingNumber'];?></a></td>
+   
+  </tr>
+  <tr>
+    <th>Nature of Complain</th>
+    <td><?php  echo $row['NatureofComplain'];?></td>
+  </tr>
+  <tr>
+    <th>Detail of Issue</th>
+    <td><?php  echo $row['IssuesDesc'];?></td>
+  </tr>
+ 
+ 
+  <tr>
+    <th>Remark</th>
+    <td><?php  if($row['Remark']==''){
+echo "Not Respond yet";
+}  else {
+ echo  $row['Remark'];
+} ;?></td>
+  </tr>
+
+<tr>
+    <th>Status</th>
+    <td><?php  if($row['Status']==''){
+echo "Not Respond yet";
+}  else {
+ echo  $cstatus=$row['Status'];
+} ;?></td>
+  </tr>
+
+ 
+</table>
+
+
+<?php  }  
+if ($cstatus==''){
+?> 
+<p align="center">                            
+ <button class="btn btn-primary waves-effect waves-light w-lg" data-toggle="modal" data-target="#myModal">Take Action</button></p>  
+
+<?php } ?>
+          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Take Action</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+<form name="submit" method="post" enctype="multipart/form-data"> 
+<table width="100%">
+<tr>
+    <th>Remark :</th>
+    <td>
+    <textarea name="remark" placeholder="" rows="12" cols="14" class="form-control wd-450" required="true"></textarea></td>
+  </tr>
+
+  <tr>
+    <th>Status:</th>
+    <td>
+   <select name="status" class="form-control wd-450" required="true" >
+     
+     <option value="Closed">Closed</option>
+    
+   </select></td>
+  </tr>
+
+
+</table>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                   <button type="submit" name="submit" class="btn btn-primary">Update</button>
+                                                     </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                 </div>
                             </div>
                         </div> <!-- end row -->
